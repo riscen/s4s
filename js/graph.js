@@ -14,19 +14,36 @@ function updateCanvasSize() {
 }
 
 function addPoint(evt) {
-    let click = getMousePos(this, evt);
-    let point = {
-            y: evt.button,
-            x: [click.x, click.y],
-        };
-    inputData.push(point);
-    addValueToTable(point);
-    let canvasCoords = cartesian2CanvasCoord(point.x, this);
-    point = {
-            y: evt.button,
-            x: [canvasCoords[0], canvasCoords[1]],
-        };
-    drawCircle(point);
+    if(perceptron.trained) {
+        let click = getMousePos(this, evt);
+        let output = perceptron.calculateOutput([click.x, click.y])==1?right:left;
+        let point = {
+                y: output,
+                x: [click.x, click.y],
+            };
+        addValueToTable(point);
+        let canvasCoords = cartesian2CanvasCoord([click.x, click.y], this);
+        point = {
+                y: output,
+                x: [canvasCoords[0], canvasCoords[1]],
+            };
+        drawCircle(point);
+    }
+    else {
+        let click = getMousePos(this, evt);
+        let point = {
+                y: evt.button,
+                x: [click.x, click.y],
+            };
+        inputData.push(point);
+        addValueToTable(point);
+        let canvasCoords = cartesian2CanvasCoord(point.x, this);
+        point = {
+                y: evt.button,
+                x: [canvasCoords[0], canvasCoords[1]],
+            };
+        drawCircle(point);
+    }
 }
 
 function getMousePos(canvas, e) {
