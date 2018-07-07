@@ -14,44 +14,23 @@ function updateCanvasSize() {
 }
 
 function addPoint(evt) {
-    if(perceptron.trained) {
-        let click = getMousePos(this, evt);
-        let output = perceptron.calculateOutput([click.x, click.y])==1?right:left;
-        let point = {
-                y: output,
-                x: [click.x, click.y],
-            };
-        addValueToTable(point);
-        let canvasCoords = cartesian2CanvasCoord([click.x, click.y], this);
-        point = {
-                y: output,
-                x: [canvasCoords[0], canvasCoords[1]],
-            };
-        drawCircle(point);
-    }
-    else {
-        let click = getMousePos(this, evt);
-        let point = {
-                y: evt.button,
-                x: [click.x, click.y],
-            };
-        inputData.push(point);
-        addValueToTable(point);
-        let canvasCoords = cartesian2CanvasCoord(point.x, this);
-        point = {
-                y: evt.button,
-                x: [canvasCoords[0], canvasCoords[1]],
-            };
-        drawCircle(point);
-    }
+    let clickPos = getMousePos(this, evt);
+    let output = perceptron.trained? (perceptron.calculateOutput(clickPos)==1?right:left):evt.button;
+    let point = {
+            y: output,
+            x: clickPos,
+        };
+    inputData.push(point);
+    addValueToTable(point);
+    drawCircle({
+            y: output,
+            x: cartesian2CanvasCoord(point.x, this),
+        });
 }
 
 function getMousePos(canvas, e) {
     let coords = canvas2CartesianCoord([e.clientX, e.clientY], canvas);
-    return {
-      x: coords[0],
-      y: coords[1]
-    };
+    return [coords[0], coords[1]];
 };
 
 function canvas2CartesianCoord(pos, canvas) {
@@ -106,19 +85,18 @@ function beginTraining() {
     let learningRate = document.getElementById("learning-rate").value;
     let epochs = document.getElementById("epochs").value;
     let x = [], y = [];
+    let progressBar = document.getElementById("progress-bar");
+    progressBar.max = epochs;
     for(let i = 0; i < inputData.length; i++) {
         x.push(inputData[i].x);
         y.push(inputData[i].y === right?1:0);
     }
-    if(!perceptron.train(x, y, learningRate, epochs)) {
+    if(!perceptron.train(x, y, learningRate, epochs, progressBar, 
+        document.getElementById("progress-value"))) {
+
     }
     else {
-        let canvas = document.getElementById("work-area-canvas");
-        let xi = canvas2CartesianCoord([canvas.offsetLeft, 0], canvas)[0];
-        let xf = canvas2CartesianCoord([canvas.width+canvas.offsetLeft, 0], canvas)[0];
-        let yi = slopeFuction(xi);
-        let yf = slopeFuction(xf); 
-        drawLine(yi, yf);
+        drawLine();
         document.getElementById("control-panel-inputs").disabled = true;
         document.getElementById("train-btn").disabled = true;
     }
@@ -150,11 +128,18 @@ function drawPlane() {
                 };
             drawCircle(point);
         }
+        if(perceptron.trained) {
+            drawLine();
+        }
     }
 }
 
-function drawLine(yi, yf) {
+function drawLine() {
     let canvas = document.getElementById("work-area-canvas");
+    let xi = canvas2CartesianCoord([canvas.offsetLeft, 0], canvas)[0];
+    let xf = canvas2CartesianCoord([canvas.width+canvas.offsetLeft, 0], canvas)[0];
+    let yi = slopeFuction(xi);
+    let yf = slopeFuction(xf); 
     let ctx = canvas.getContext("2d");
     ctx.strokeStyle = '#00ff00';
     ctx.lineWidth = 2;

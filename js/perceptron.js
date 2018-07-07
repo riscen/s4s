@@ -26,7 +26,7 @@ class Perceptron {
 			this.weights.push(((Math.random()*3)+1)%3-1);
 	}
 
-	train(x, y, learningRate, epochs) {
+	train(x, y, learningRate, epochs, progressBar=null, progressValue=null) {
 		if(!this.checkValidData(x, y)) {
 			return false;
 		}
@@ -42,6 +42,10 @@ class Perceptron {
 				}
 			}
 			i++;
+			if(progressBar != null) {
+				progressBar.value = i;
+				progressValue.innerHTML = i;
+			}
 		}
 		if (done) {
 			this._trained = true;
