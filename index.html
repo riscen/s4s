@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Perceptron</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="js/perceptron.js"></script>
+	<script type="text/javascript" src="js/functions.js"></script>
+	<script type="text/javascript" src="js/graph.js"></script>
+	<script type="text/javascript" src="js/tabFunctions.js"></script>
+	<link rel="stylesheet" type="text/css" href="style/style.css">
+</head>
+<body onresize="updateCanvasSize()">
+	<div id="menu-container"> 
+		<h1>MENU</h1>
+	</div>
+	<div id="info-container">
+		<h1>Perceptron</h1>
+		<div class="tab">
+			<button class="tab-links active" onclick="openTab(event, 'about')">About</button>
+			<button class="tab-links" onclick="openTab(event, 'controls')">Controls</button>
+		</div>
+
+		<div id="about" class="tab-content">
+			<h2>About</h2>
+			<h3>Example</h3>
+			<p>
+				This example consists in a perceptron classifying mouse clicks (left click and right click).
+			</p>
+			<p>
+				Click on the canvas to fill the classes (right click or left click). Modify the control values to get a better training.
+				<br>
+				Once you finish click <strong>Begin training</strong> in the control tab to train the perceptron. The progress will be shown in real time.
+			</p>
+		</div>
+
+		<div id="controls" class="tab-content">
+			<h2>Controls</h2>
+			<div id="control-panel">
+				<fieldset id="control-panel-inputs">
+					<span>Learning rate: </span><input id="learning-rate" class="number" type="number" name="" min='0.001' max="0.9" value="0.1" step=".001">
+					<br>
+					<span>Epochs: </span><input id="epochs" class="number" type="number" name="" min="1" max="1000" value="50">
+					<br>
+					<br>
+				</fieldset>
+				<div class="action-buttons">
+					<button onclick="restart()">Restart</button>
+					<button id="train-btn" onclick="beginTraining()">Begin training</button>
+				</div>
+				<br>	
+			</div>
+			
+			<div id="data-table-container">
+				<h3>Input data</h3>
+				<table>
+					<thead>
+						<tr>
+							<th>Click</th>
+							<th>X</th>
+							<th>Y</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="3">
+							<div class="scrollit">
+								<table id="input-data-table">
+									<tr></tr>
+								</table>
+							</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div id="work-area-container">
+		<div id="perceptron-canvas-container">
+			<canvas id="work-area-canvas" width="600px" height="600px">
+				Your browser doesn't support canvas tag.
+			</canvas>
+		</div>
+		<div id="progress-bar-container">
+			<progress id="progress-bar" role="progressbar" value="70" min="0" max="100">
+			</progress>
+		</div>
+	</div>
+</body>
+</html>
