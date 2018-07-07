@@ -20,17 +20,8 @@ body {
 
 #work-area-canvas {
 	width: 100%;
-	height: 85vh;
+	height: 88vh;
 	background-color: #fcfcfc;
-}
-
-#progress-bar {
-	width: 100%;
-	height: 2vh;
-	background-color: white;
-  	border-radius: 2px;
-  	border-color: #444547;
-  	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
 }
 
 canvas {
@@ -78,9 +69,21 @@ canvas {
 	display: block;
 }
 
+fieldset {
+	border: 1px solid #c9cacc;
+}
+
 /*Controls style*/
 .number {
 	width: 40%;
+}
+
+#progress-bar {
+	width: 100%;
+	height: 2vh;
+	background-color: white;
+  	border-color: #c9cacc;
+  	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
 }
 
 .action-buttons button {

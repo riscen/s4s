@@ -46,6 +46,13 @@
 					<br>
 					<br>
 				</fieldset>
+				<div id="progress-bar-container">
+					<span>Training epochs: <span id="progress-value">0</span></span>
+					<br>
+					<progress id="progress-bar" role="progressbar" value="0" min="0" max="100">
+					</progress>
+					<br>
+				</div>
 				<div class="action-buttons">
 					<button onclick="restart()">Restart</button>
 					<button id="train-btn" onclick="beginTraining()">Begin training</button>
@@ -84,10 +91,6 @@
 			<canvas id="work-area-canvas" width="600px" height="600px">
 				Your browser doesn't support canvas tag.
 			</canvas>
-		</div>
-		<div id="progress-bar-container">
-			<progress id="progress-bar" role="progressbar" value="70" min="0" max="100">
-			</progress>
 		</div>
 	</div>
 </body>
